@@ -1,0 +1,160 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<haptic>
+	<device
+		name = "PHANToM 1">	
+		
+		<constraints 
+			force-alpha-filter = "0.75"	
+			velocity-alpha-filter = "0.8"
+			max-force = "3.0"
+			max-velocity = "0.2" 
+			
+			max-x-axis = "70"
+			min-x-axis = "-70"
+			max-y-axis = "190"
+			min-y-axis = "-190"
+			max-z-axis = "100"
+			min-z-axis = "-100"
+			
+			max-gimbal1 = "1.4"
+			min-gimbal1 = "-1.4"
+
+			min-joint1 = "-1.0"
+			max-joint1 = "0.51"
+			
+			min-joint2 = "0.13"
+			max-joint2 = "1.62"
+			
+			min-joint3 = "-0.11"
+			max-joint3 = "1.8"
+			
+			min-joint4 = "-2.55"
+			max-joint4 = "2.35"
+			
+			min-joint5 = "-0.7"
+			max-joint5 = "0.7"			
+		/>	
+		
+		<scalling-coefficient-force-feedback
+			scale-hj0 = "0.1"
+			scale-hj1 = "0.05"
+			scale-hj2 = "0.05" 
+		/>
+		
+		<threshold-force-feedback
+			velocity-threshold = "0.25"
+			force-threshold = "0.2"
+		/>
+		
+		<log
+			log-enabled = "false"
+			log-path = "./Logs"
+			log-name = "PHANTOM-H1-LOG-" 	
+		/>
+	</device>
+	
+	<device
+		name = "PHANToM 2">	
+		
+		<constraints 
+			force-alpha-filter = "0.75"	
+			velocity-alpha-filter = "0.8"
+			max-force = "3.0"
+			max-velocity = "0.2" 
+			
+			max-x-axis = "70"
+			min-x-axis = "-70"
+			max-y-axis = "190"
+			min-y-axis = "-190"
+			max-z-axis = "100"
+			min-z-axis = "-100"
+			
+			max-gimbal1 = "1.4"
+			min-gimbal1 = "-1.4"
+
+			min-joint1 = "-0.9"
+			max-joint1 = "0.51"
+			
+			min-joint2 = "0.13"
+			max-joint2 = "1.62"
+			
+			min-joint3 = "-0.11"
+			max-joint3 = "1.8"
+			
+			min-joint4 = "-2.55"
+			max-joint4 = "2.35"
+			
+			min-joint5 = "-0.7"
+			max-joint5 = "0.7"			
+		/>	
+		
+		<scalling-coefficient-force-feedback
+			scale-hj0 = "0.1"
+			scale-hj1 = "0.05"
+			scale-hj2 = "0.05" 
+		/>
+		
+		<threshold-force-feedback
+			velocity-threshold = "0.25"
+			force-threshold = "0.2"
+		/>
+		
+		<log
+			log-enabled = "false"
+			log-path = "./Logs"
+			log-name = "PHANTOM-H1-LOG-" 	
+		/>
+	</device>
+	
+	<device
+		name = "FALCON 1">	
+		
+		<constraints 
+			force-alpha-filter = "0.95"
+			velocity-alpha-filter = "0.8"
+			max-force = "8.9"
+			max-velocity = "0.2" 
+			
+			max-x-axis = "0.06"
+			min-x-axis = "-0.06"
+			max-y-axis = "0.06"
+			min-y-axis = "-0.06"
+			max-z-axis = "0.06"
+			min-z-axis = "-0.06"
+			
+			max-gimbal1 = "0.06"
+			min-gimbal1 = "-0.06"
+
+			min-joint1 = "-0.06"
+			max-joint1 = "0.06"
+			
+			min-joint2 = "-0.06"
+			max-joint2 = "0.06"
+			
+			min-joint3 = "-0.06"
+			max-joint3 = "0.06"
+			
+			min-joint4 = "-0.06"
+			max-joint4 = "0.06"
+			
+			min-joint5 = "0.0"
+			max-joint5 = "0.0"			
+		/>	
+		
+		<scalling-coefficient-force-feedback
+			scale-hj0 = "0.5"
+			scale-hj1 = "0.1"
+			scale-hj2 = "0.1" 
+		/>
+		
+		<threshold-force-feedback
+			velocity-threshold = "0.25"
+			force-threshold = "0.2"
+		/>
+		<log
+			log-enabled = "false"
+			log-path = "./Logs"
+			log-name = "FALCON-H1-LOG-" 	
+		/>
+	</device>
+</haptic>

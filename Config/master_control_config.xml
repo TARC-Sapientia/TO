@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Master configuration. General note:
+  - tags: missing tags will leave the associated variables uninitialized and will result in undefined behavior (unless otherwise specified).
+    Multiple repetitions of the same tag will overwrite previous configurations.
+  - attributes: attributes missing from tags will cause a crash
+-->
+<master>
+
+  <!-- Used to set up the communication channels with the slave. -->
+	<remote-slave>
+
+    <!--
+      Used to set up a single communication channel with the slave.
+      There should be 2 streams for the control and video channels.
+      - type: The type of the stream: "video", "control".
+      - lport: The port that the master is listening on.
+      - rhost: The IP address of the slave.
+      - rport: The port that the slave is listening on.
+      - chunk-size: The size of a chunk in bytes. Frames will be split according to this.
+      - receive-buffer-size: The size of the socket's receive buffer in bytes.
+      - send-queue-length: The maximum number of frames queued for sending.
+      - statistics: The configuration of the statistics associated with the stream.
+                    OPTIONAL element. Should be associated with "control" type streams.
+        - log-path: The location of the statistics log file.
+        - log-name: The name of the statistics log file.
+        - window: The size of the statistics window. Represents the number of control packets received after which the statistics are computed.
+        - alpha: The coefficient used at the jitter filtering.
+    -->
+    <stream
+      type="control"
+
+			lport="10023"
+
+			rhost="193.168.112.133"
+
+			rport="10024"
+
+			chunk-size="8192"
+
+			receive-buffer-size="102400"
+
+			send-queue-length="5">
+
+      <statistics
+				log-path="./Logs"
+
+        log-name="PACKET-LOG-"
+
+				window="30"
+
+				alpha="0.5"/>
+		</stream>
+		
+		<stream
+			type="video"
+			lport="10026"
+			rhost="193.168.112.133"
+			rport="10025"
+			chunk-size="8192"
+			receive-buffer-size="2097152"
+      send-queue-length="200"/>
+
+	</remote-slave>
+
+  <!--
+    Clock synchronization configuration.
+    count: the number of messages sent in the clock synchronization phase.
+    period [ms]: the constant delay between the messages sent in the clock synchronization phase.
+  -->
+  <sync count="40" period="50"/>
+
+  <!--
+    Control timer configuration.
+    period [ms]: the period of the control timer.
+  -->
+  <control-timer period="5"/>
+
+  <!--
+    Video playback configuration.
+    max-decoding-queue-length: the size of the frame queue for the new video stream.
+  -->
+  <video max-decoding-queue-length="2"/>
+
+  <!--
+    Haptic configuration.
+    config-path: the location of the haptic configuration file.
+  -->
+  <haptic config-path="../../Config/haptic_config.xml"/>
+
+  <!--
+    Kuka configuration.
+    config-path: the location of the KUKA youBot config file.
+  -->
+  <kuka config-path="../../Config/kuka_config.xml"/>
+		
+	<!-- Artificial delay [ms] = artificial-delay * control-timer period -->  
+	<delay artificial-delay = "0"/>
+	
+	<!-- 
+    MODE = 	CONTROLLER_PHANTOM_KUKA_POSITION_FORCE_POPC_ON_J1
+            CONTROLLER_PHANTOM_KUKA_POSITION_FORCE           
+            CONTROLLER_NOVINT_KUKA_POSITION_FORCE_POPC_ON_J1
+            CONTROLLER_NOVINT_KUKA_POSITION_FORCE
+    -->
+	<kuka-controller-mode 
+		mode = "CONTROLLER_PHANTOM_KUKA_POSITION_FORCE_POPC_ON_J1"
+	/>
+	
+  <!-- Path to the directory where the master log file will be created. -->
+	<log path="./Logs"/>
+	
+</master>

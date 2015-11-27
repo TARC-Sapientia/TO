@@ -1,0 +1,148 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<kuka>
+
+    <!--
+    Joint: 1 lowerLimit: -5.84014 rad upperLimit: -0.0100692 rad
+    Joint: 2 lowerLimit: -2.61799 rad upperLimit: -0.0100692 rad
+    Joint: 3 lowerLimit: -5.02655 rad upperLimit: -0.015708 rad
+    Joint: 4 lowerLimit: -3.42920 rad upperLimit: -0.0221239 rad 
+    Joint: 5 lowerLimit: -5.64159 rad upperLimit: -0.110619 rad
+    
+    arm_joint_2. The valid range is between 0.0100692 rad and 2.61799 rad and it is: -0.110907 rad
+    arm_joint_3. The valid range is between -5.02655 rad and -0.015708 rad and it is: -0.01 rad
+    
+    arm_joint_3 is out of range. The valid range is between -5.02655 rad and -0.015708 rad and it is: -5.02655 rad
+
+    -->
+	<joint-constraints 
+		joint1-min = "1.8"
+		joint1-max = "3.8"
+		joint2-min = "0.012"
+		joint2-max = "2.35"
+		joint3-min = "-4.70"
+		joint3-max = "-0.01"
+		joint4-min = "0.025"
+		joint4-max = "3.40"
+		joint5-min = "0.12"
+		joint5-max = "5.5"		
+	/>
+    
+    <!--joint-constraints 
+		joint1-min = "0.0100692"
+		joint1-max = "5.84014"
+		joint2-min = "0.0100692"
+		joint2-max = "1.2"
+		joint3-min = "-3.5"
+		joint3-max = "-0.01"
+		joint4-min = "0.22"
+		joint4-max = "1.7"
+		joint5-min = "0.11"
+		joint5-max = "5.64"		
+	/
+    -->
+    
+				
+	<denavit-hartenberg-parameters
+		joint1_d = "0.147"
+		joint1_a = "-0.033"
+		joint1_alpha = "1.57075"
+		joint2_d = "0"
+		joint2_a = "0.155"
+		joint2_alpha = "0"
+		joint3_d = "0"
+		joint3_a = "0.135"
+		joint3_alpha = "0"
+		joint4_d = "0"
+		joint4_a = "0"
+		joint4_alpha = "1.57075"
+		joint5_d = "0.2175"
+		joint5_a = "0"
+		joint5_alpha = "0"
+	/>
+		
+	<arm-joint-home-positions
+		joint1 = "0.11"
+		joint2 = "0.11"
+		joint3 = "-0.11"
+		joint4 = "0.11"
+		joint5 = "0.13"
+	/>
+
+    <!-- Front position for Phantom Omni measurements
+	<arm-joint-front-positions
+		joint1 = "2.95"
+		joint2 = "2.53"
+		joint3 = "-2.00"
+		joint4 = "2.62"
+		joint5 = "2.91"
+	/>
+    -->
+
+    <!-- Front position for Novint Falcon measurements -->
+	<arm-joint-front-positions
+		joint1 = "2.95"
+		joint2 = "0.11"
+		joint3 = "-1.50"
+		joint4 = "2.01"
+		joint5 = "2.91"
+	/>
+	
+	<direct-geometry-joint-zero-offsets
+		joint1 = "192.6913"
+		joint2 = "21.2430"
+		joint3 = "151.001"
+		joint4 = "-102.00267"
+	/>
+
+    <gravity-compensation-joint-zero-offsets
+    	joint2 = "25.0017"
+		joint3 = "151.0017"
+        joint4 = "-102.0026"
+    />
+    
+	<gravity-compensation-dynamic-parameters
+		g = "9.81"
+		m1 = "1.318"
+		m2 = "0.821"
+		m3 = "1.456" 
+		l1 = "0.155"
+		l2 = "0.135"
+		l3 = "0.218"
+		lc1 = "0.1722"
+		lc2 = "0.1038"
+		lc3 = "0.0623"
+	/>
+	
+	<!--
+		The velocity-safety-percent define that how much percent of maximum velocity use to work in safety zone
+		The force-safety-percent define that how much percent of maximum force use to work in safety zone
+		The dead-zone-percent defines that how much percent of maximum force or velocity use to dead-zone
+	-->
+	<controller_parameters
+		velocity-safety-percent = "1.0"
+		force-safety-percent = "1.0"
+		dead-zone-percent = "0.05"
+		velocity-alpha-filter = "0.95"
+		velocity-threshold = "0.0"   
+		integral-gain-velocity-control = "5.0"
+		max-arm-velocity-for-teleoperation = "1.0"
+        endEffector-x-axis-collision-safety-limit = "0.3"
+	/>
+	
+	<!--
+		The v-arm-joint-max is the maximum velocity of KUKA manipulator's joints in [rad/sec] and same on the manipulator first 3 joints (J1,J2,J3) (1.57 [rad/sec] = 90 [degree/sec])
+		The f-arm-joint-max is the maximum force of the KUKA manipulator's joints in [Nm] and same on the manipulator first 3 joints (J1,J2,J3) (9.5 [Nm])  
+	-->
+	<extreme-kuka-values
+		v-arm-joint-max = "1.57"
+		f-arm-joint-max-j1 = "9.5"
+		f-arm-joint-max-j2 = "9.5"
+		f-arm-joint-max-j3 = "6"
+		vx-platform-max = "0.2"
+		vx-platform-min = "-0.2"
+		vy-platform-max = "0.2"
+		vy-platform-min = "-0.2"
+		omega-platform-max = "0.2"
+		omega-platform-min = "-0.2" 
+	/>
+</kuka>

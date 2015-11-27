@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Slave configuration. General note:
+  - tags: missing tags will leave the associated variables uninitialized and will result in undefined behavior (unless otherwise specified).
+    Multiple repetitions of the same tag will overwrite previous configurations.
+  - attributes: attributes missing from tags will cause a crash (unless otherwise specified)
+-->
+<slave>
+
+  <!--
+    Used to set up a single communication channel with the master.
+    There should be 2 streams for the control and video channels.
+    - type: The type of the stream: "video", "control".
+    - lport: The port that the slave is listening on.
+    - rhost: The IP address of the master.
+    - rport: The port that the master is listening on.
+    - chunk-size: The size of a chunk in bytes. Frames will be split according to this.
+    - receive-buffer-size: The size of the socket's receive buffer in bytes.
+    - send-queue-length: The maximum number of frames queued for sending.
+    - statistics: The configuration of the statistics associated with the stream.
+                  OPTIONAL element. Should be associated with "control" type streams.
+      - log-path: The location of the statistics log file.
+      - log-name: The name of the statistics log file.
+      - window: The size of the statistics window. Represents the number of control packets received after which the statistics are computed.
+      - alpha: The coefficient used at the jitter filtering.
+  -->
+	<stream
+		type="control"
+		lport="10024"
+		rhost="192.168.112.131"
+		rport="10023"
+		chunk-size="8192"
+		receive-buffer-size="102400"
+    send-queue-length="5">
+		<statistics
+			log-path="./Logs"
+			log-name="PACKET-LOG-"
+			window="30"
+			alpha="0.5"/>
+	</stream>
+	
+	<stream
+		type="video"
+		lport="10025"
+		rhost="192.168.112.131"
+		rport="10026"
+		chunk-size="8192"
+		receive-buffer-size="2097152"
+    send-queue-length="200"/>
+	
+	<!--
+    Slave stream control:
+    - mode: stream control mode
+      = "static": fixed u value: u = u-max
+      = "active": uses the local stream controller and ignores the received values from the master stream control
+             "u-max", "u-min", "u-inc", "k-i", "delta", "mu" and "lambda" attributes are needed
+    - log-path: the location of the stream control log file.
+    - log-name: the name of the stream control log file.
+    Attributes used in "static" mode:
+    - u: the constant value of the control signal (i.e. video compression).
+         Possible value range: [0-100]. Higher is better quality but bigger in size.
+         Recommended value range: [10-90].
+    Attributes used in "active" mode:
+    - u-max: the maximum value for the control signal.
+    - u-min: the minimum value for the control signal.
+    - u-inc: the increment for the control signal.
+    - k-i: the proportional coefficient used in the decreasing branch of the control law.
+    - delta: the control threshold.
+    - mu: the weight of the receive jitter variance used in the control error calculus.
+    - lambda: the weight of the average delay used in the control error calculus.
+	-->
+	<slave-stream-control
+		mode="static"
+		log-path="./Logs" 
+		log-name="CONTROLLER-LOG-"
+		u="20"
+		u-max="20"
+		u-min="10"
+		u-inc="0.05"
+		k-i="0.05"
+		delta="8"
+		mu="0.5"
+		lambda="0.5"/>
+
+  <!--
+    Clock synchronization configuration.
+    count: the number of messages sent in the clock synchronization phase.
+    period [ms]: the constant delay between the messages sent in the clock synchronization phase.
+  -->
+	<sync count="40" period="50"/>
+
+  <!--
+    Control timer configuration.
+    period [ms]: the period of the control timer.
+  -->
+	<control-timer period="5"/>
+
+  <!--
+    Video timer configuration.
+    period [ms]: the period of the video capture. Should be set in accordance with the "video-capture" element's "fps" attribute.
+  -->
+	<video-timer period="100"/>
+
+  <!--
+    Video capture configuration.
+    camera: the id of the camera.
+    width: the width of video frames.
+    height: the height of video frames.
+    fps: the requested fps. Should be set in accordance with the "video-timer" element's "period" attribute.
+  -->
+	<video-capture camera="0" width="640" height="480" fps="10"/>
+
+  <!--
+    Haptic configuration.
+    config-path: the location of the haptic config file.
+  -->
+  <haptic config-path="../../Config/haptic_config.xml"/>
+
+  <!--
+    Kuka configuration.
+    config-path: the location of the KUKA youBot config file.
+  -->
+  <kuka	config-path="../../Config/kuka_config.xml"/>
+		
+  <!-- Artificial delay [ms] = artificial-delay * control-timer period -->
+  <delay artificial-delay = "0" />
+
+  <!--
+    mode = CONTROLLER_PHANTOM_KUKA_POSITION_FORCE_POPC_ON_J1
+           CONTROLLER_PHANTOM_KUKA_POSITION_FORCE
+           CONTROLLER_NOVINT_KUKA_POSITION_FORCE_POPC_ON_J1
+           CONTROLLER_NOVINT_KUKA_POSITION_FORCE
+  -->
+  <kuka-controller-mode mode = "CONTROLLER_PHANTOM_KUKA_POSITION_FORCE_POPC_ON_J1"/>
+  
+  <!-- Path to the directory where the slave log file will be created. -->
+  <log path="./Logs"/>
+		
+  <!-- Path to the directory where the master log file will be created. -->
+  <log path="./Logs"/>
+</slave>
