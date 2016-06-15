@@ -35,17 +35,11 @@ using namespace std;
 PO_PC_Master_YoubotArm::PO_PC_Master_YoubotArm(string logPath, string logName, Master_PO_PC_Type po_pc_Type, double T, double max_force, double max_velocity)
 	: 
 	m_PO_PC_Type(po_pc_Type),
-	m_TI_M(10000.0),
-	m_delta_M(0.05),
-	m_alpha_PC_signal_F(0.98),
+	m_TI_M(10.0),
+	m_delta_M(0.01),
 	m_T(T),
 	m_max_force(max_force),
 	m_max_velocity(max_velocity),
-	m_Scaled_Threshold_Scale(0),
-	m_Scaled_Hyst_Width_Up(1),
-	m_Scaled_Hyst_Width_Down(-4),
-	m_Scaled_Threshold_Scale_Max(0.5),
-	m_Scaled_DE_Upper_Limit(50),
 	m_F_Min(0.01),
 	m_P_M_treshold(0),
 	m_v_M_treshold(0.02)
@@ -183,11 +177,8 @@ double PO_PC_Master_YoubotArm::Passivity_Controller(double f_local, double v_loc
 	{
 		if ( ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) > 0 ) && (abs(v_local) >= m_v_M_treshold) ) // controller switch on condition 
 		{
-			m_PC_signal = (m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / (m_T * v_local);
+			m_PC_signal_F = (m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / (m_T * v_local);
 		}
-
-		// Control signal conditioning
-		m_PC_signal_F = m_alpha_PC_signal_F * m_PC_signal_F + (1 - m_alpha_PC_signal_F) * m_PC_signal;
 
 		if (m_PC_signal_F > m_max_force)
 		{
@@ -218,16 +209,13 @@ double PO_PC_Master_YoubotArm::Passivity_Controller(double f_local, double v_loc
 		if ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) > 0 ) // Controller switch on condition 
 		{
 			double delta_fun = 1.0 / (v_local + Sign(v_local) * m_delta_M);
-			m_PC_signal = delta_fun * ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T  + m_z);
+			m_PC_signal_F = delta_fun * ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T  + m_z);
 			m_z += (1.0 / m_TI_M) * ( (m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T - (m_PC_signal * v_local) );
 		}
 		else
 		{
 			m_z = 0.0;
 		}
-
-		// Control signal conditioning
-		m_PC_signal_F = m_alpha_PC_signal_F * m_PC_signal_F + (1 - m_alpha_PC_signal_F) * m_PC_signal;
 
 		if (m_PC_signal_F > m_max_force)
 		{

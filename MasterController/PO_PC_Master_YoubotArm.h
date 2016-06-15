@@ -131,21 +131,6 @@ class PO_PC_Master_YoubotArm
 		/** Dynamic internal state of the filtered, bounded output passivity controller */
 		double m_z;
 		
-		/** Variable for scaled passivity controller: Upper limit of the energy hysteresis around zero*/
-		double m_Scaled_Hyst_Width_Up;
-		
-		/** Variable for scaled passivity controller: Lower limit of the energy hysteresis around zero*/
-		double m_Scaled_Hyst_Width_Down;
-		
-		/** Variable for scaled passivity controller: The applied piecewise constant scaling factor. Possible values : 1 or m_Scaled_Threshold_Scale_Max or 0*/
-		double m_Scaled_Threshold_Scale;
-		
-		/** Variable for scaled passivity controller: Scaling coefficient when the controller is active takes values in the interval (0,1) */
-		double m_Scaled_Threshold_Scale_Max;
-		
-		/** Variable for scaled passivity controller: The energy value when the force feedback shuts down completely, i.e. the scaling factor is 0*/
-		double m_Scaled_DE_Upper_Limit;
-		
 		/** Variable for scaled passivity controller: Minimum absolute value of the force feedback. */
 		double m_F_Min;
 		
