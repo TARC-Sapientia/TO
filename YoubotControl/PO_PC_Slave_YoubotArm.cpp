@@ -41,8 +41,7 @@ PO_PC_Slave_YoubotArm::PO_PC_Slave_YoubotArm(string logPath, string logName, Sla
       m_max_velocity(max_velocity),
       m_P_S_treshold(0.0),
       m_f_S_treshold(0.0),
-      m_alpha_PC_signal_F(0.98),
-      m_TI_S(1.0E6),
+      m_TI_S(10),
       m_delta_S(0.01)
 {
     Reset_PO_PC();
@@ -182,9 +181,8 @@ double PO_PC_Slave_YoubotArm::Passivity_Controller(double f_local, double v_loca
     {
         if(((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) > 0) && (abs(f_local) >= m_f_S_treshold)) //!!!! >0 artificial delay  ; <0 no artifical delay
         {
-            m_PC_signal = (m_E_local_OUT + m_PC_Energy - E_IN_remote_del)  / (m_T * f_local);
+            m_PC_signal_F = (m_E_local_OUT + m_PC_Energy - E_IN_remote_del)  / (m_T * f_local);
         }
-        m_PC_signal_F = m_alpha_PC_signal_F * m_PC_signal_F + (1 - m_alpha_PC_signal_F) * m_PC_signal;
 
         if (m_PC_signal_F > m_max_velocity)
         {
@@ -217,15 +215,13 @@ double PO_PC_Slave_YoubotArm::Passivity_Controller(double f_local, double v_loca
         if ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) > 0 )
         {
             double delta_fun = 1.0 / (f_local + Sign(f_local) * m_delta_S);
-            m_PC_signal = delta_fun * ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T  + m_z);
+            m_PC_signal_F = delta_fun * ((m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T  + m_z);
             m_z += (1.0/m_TI_S) * ( (m_E_local_OUT + m_PC_Energy - E_IN_remote_del) / m_T  - (m_PC_signal * v_local) );
         }
         else
         {
             m_z = 0.0;
         }
-
-        m_PC_signal_F = m_alpha_PC_signal_F * m_PC_signal_F + (1 - m_alpha_PC_signal_F) * m_PC_signal;
 
         if (m_PC_signal_F > m_max_velocity)
         {
